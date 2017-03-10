@@ -1,5 +1,7 @@
 package test;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -17,7 +19,7 @@ public class PatternTest {
 	
 	
 	public static void main(String[] args) {
-		PatternTest.checkStament();
+		PatternTest.getLocalIp();
 	}
 	
 	/**
@@ -41,22 +43,15 @@ public class PatternTest {
 		System.out.println(str);
 	}
 	
-	//查询出map的结果
-	/*	List<Map<String, Object>> result2Map = smsTemplateDao.getResult2Map(sqlContent, null);
-		if(null != result2Map && result2Map.size() > 0) {
-			Map<String, Object> map = result2Map.get(0);
-			for(Map.Entry<String, Object> entry : map.entrySet()) {
-				String column = entry.getKey();  //数据查询出来封装的map的键是大写的
-				String value = entry.getValue().toString();
-				//匹配大写的字符
-				if(smsTemplate.indexOf(column) != -1) {
-					smsTemplate = smsTemplate.replace("<%"+column+"%>", value);
-				} else if (smsTemplate.indexOf(column.toLowerCase()) != -1) {
-					smsTemplate = smsTemplate.replace("<%"+column.toLowerCase()+"%>", value);
-				} else {
-					//都不匹配则逐一替换
-					smsTemplate = smsTemplate.replace("<%", "").replace("%>", "").replace(column, value).replace(column.toLowerCase(), value);
-				}
-			}
-		}*/
+	public static void getLocalIp() {
+		try {
+			InetAddress address = InetAddress.getLocalHost();
+			String hostAddress = address.getHostAddress();
+			String hostName = address.getHostName();
+			System.out.println(hostAddress);
+			System.out.println(hostName);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+	}
 }
