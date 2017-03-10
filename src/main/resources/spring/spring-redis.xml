@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 指定redis的配置文件所在位置 -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.pool.maxTotal}"/>
+        <property name="maxIdle" value="${redis.pool.maxIdle}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${redis.pool.timeBetweenEvictionRunsMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${redis.pool.minEvictableIdleTimeMillis}"/>
+        <property name="softMinEvictableIdleTimeMillis" value="${redis.pool.softMinEvictableIdleTimeMillis}"/>
+        <property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
+    </bean>
+	
+	<!-- 切片连接池,用于集群操作 -->
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig"/>
+        <constructor-arg index="1">
+            <list>
+                <bean class="redis.clients.jedis.JedisShardInfo">
+                    <constructor-arg index="0" value="${redis.pool.host}"/>
+                    <constructor-arg index="1" value="${redis.pool.port}"/>
+                    <property name="password" value="${redis.pool.password}"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+    <!-- 非切片连接池，一般用于单机的操作 -->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1" value="${redis.pool.host}" />
+		<constructor-arg index="2" value="${redis.pool.port}" type="int" />
+	</bean>
+	
+	<!-- spring框架集成redis的连接工厂实例，用于初始化连接操作，获取连接 -->
+    <bean id="jedisConnectionFactory"
+    	class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    	<property name="usePool" value="true"></property>
+    	<property name="hostName" value="${redis.pool.host}"></property>
+    	<property name="port" value="${redis.pool.port}"></property>
+    	<property name="poolConfig" ref="jedisPoolConfig"></property>
+    </bean>
+    
+    
+    
+    <!-- spring集成redis的数据交互模版类，和hibernate的hibernateTemplate功能 -->
+    <bean id="redisTemplate"
+    	class="org.springframework.data.redis.core.RedisTemplate">
+    	<property name="connectionFactory" ref="jedisConnectionFactory"></property>
+    </bean>
+
+</beans>
