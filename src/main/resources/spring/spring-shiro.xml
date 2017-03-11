@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 定义自己的域 -->
+	<bean id="myRealm" class="com.oqs.shiro.MyRealm" init-method="setCredentialsMatcher"></bean>
+
+	<!-- 配置管理 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="myRealm"></property>
+	</bean>
+
+	<!-- 配置生命周期  -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	
+	<!-- 配置shiro的过滤器，要和web.xml文件中的shiro filter 的name一致 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager"></property>
+		<property name="loginUrl" value="/login"></property>
+		<property name="successUrl" value="/jsp/index"></property>
+		<!-- 权限不足的错误提示页面 -->
+        <property name="unauthorizedUrl" value="/index.html"></property>
+        <!-- 基于URL拦截权限控制 -->
+        <!-- 
+        <property name="filters">  
+            <map>  
+                <entry key="authc">  
+                    <bean class="org.apache.shiro.web.filter.authc.PassThruAuthenticationFilter"/>  
+                </entry>  
+            </map>  
+        </property>
+		 -->
+		 <!--  anon过滤器处理原则 ：随便访问
+               authc需要进行权限认证 
+               url：采取第一次匹配优先的方式
+               ** 代表任意路径  * 代表任意字符
+         -->
+		 <property name="filterChainDefinitions">
+            <value>
+                /css/** = anon
+                /images/** = anon
+                /js/** = anon
+                /login = anon
+                /jsp/** = authc,roles[admin]
+            </value>
+        </property>
+	</bean>
+	
+	
+</beans>

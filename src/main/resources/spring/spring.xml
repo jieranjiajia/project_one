@@ -15,14 +15,20 @@
 		<property name="locations">
 			<list>
 				<value>classpath:redis.properties</value>
+				<value>classpath:jdbc.properties</value>
 			</list>
 		</property>
 	</bean>
 	
 	<import resource="spring-redis.xml"/>
-
+	<import resource="spring-mvc.xml"/>
+	<import resource="spring-datasource.xml"/>
+	<import resource="spring-mybatis.xml"/>
+	<import resource="spring-transaction.xml"/>
+	<import resource="spring-shiro.xml"/>
     <context:component-scan base-package="org.study.**" ></context:component-scan>
 	
+	<!-- 目前还没找出原因，下面的配置竟然没有生效 -->
 	<bean id="logInterceptor" class="org.study.util.LogInterceptor"></bean>
 	
 	<aop:config proxy-target-class="true">

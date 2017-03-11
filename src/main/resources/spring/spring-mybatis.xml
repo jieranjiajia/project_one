@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-autowire="byName" 
+		xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd" >
+
+	<!-- 创建一个会话工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+		<!--调用数据源 -->
+		<property name="dataSource" ref="druidDataSource"></property>
+		<!-- 指定类型别名所在包的路径，这样就直接以这个类名为别名 -->
+		<property name="typeAliasesPackage" value="com.oqs.pojo"></property>
+		<!-- 注册mapper的xml文件所在位置 -->
+		<property name="mapperLocations" value="classpath:com/oqs/mapper/*.xml"></property>
+		<!-- 配置分页插件 -->
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageHelper">
+					<property name="properties">
+						<value>dialect=mysql</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	
+	
+	
+	<!-- 将接口映进行注册，代理成为实体类 ，通用baseDao这一步不需要了-->
+	<!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+		<property name="basePackage" value="com.oqs.dao"></property>
+    </bean> -->
+</beans>  
