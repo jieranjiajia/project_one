@@ -1,36 +1,35 @@
 package org.study.util;
 
+import java.lang.reflect.Method;
+
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
- * 使用spring的aop面向切面的方法,实现了环绕增强的接口
- * 该方法主要用于计算方法的执行时间，统计方法的执行效率
- * @author ou_qu_sheng
+ * spring集成了aop团队的方法拦截器，相当于Around的环绕增强
+ * 
  *
  */
+@Component
 public class LogInterceptor implements MethodInterceptor {
 	
 	private static final Logger log = LoggerFactory.getLogger(LogInterceptor.class);
 
-	/*@Pointcut("execution(* org.study..*.*(..))")
-	public void methodPoint(){}*/
-	
 	@Override
-	public Object invoke(MethodInvocation invocation) throws Throwable {
-		//目标方法执行前
-		String name = invocation.getMethod().getName();
-		long start = System.currentTimeMillis();
-		//调用目标方法，proceed是方法的返回结果
-		Object proceed = invocation.proceed();
-		//方法结束后
-		long end = System.currentTimeMillis();
-		long time = end - start;
-		log.info("--------方法名{}----执行了{}毫秒",name,time);
+	public Object invoke(MethodInvocation arg0) throws Throwable {
+		
+		Object[] arguments = arg0.getArguments();
+		Method method = arg0.getMethod();
+		log.info("日志：方法的参数>>{}",arguments);
+		log.info("日志：方法签名>>{}",method.getName());
+		Object proceed = arg0.proceed();
+		log.info("日志：方法的返回值>>{}" ,proceed );
 		return proceed;
 	}
+
 
 	
 	

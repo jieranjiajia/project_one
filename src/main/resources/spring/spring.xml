@@ -21,19 +21,36 @@
 	</bean>
 	
 	<import resource="spring-redis.xml"/>
-	<import resource="spring-mvc.xml"/>
-	<import resource="spring-datasource.xml"/>
+	<!-- <import resource="spring-mvc.xml"/> -->
+	<!-- <import resource="spring-datasource.xml"/>
 	<import resource="spring-mybatis.xml"/>
 	<import resource="spring-transaction.xml"/>
-	<import resource="spring-shiro.xml"/>
-    <context:component-scan base-package="org.study.**" ></context:component-scan>
+	<import resource="spring-shiro.xml"/> -->
+    <context:component-scan base-package="org.study" ></context:component-scan>
 	
-	<!-- 目前还没找出原因，下面的配置竟然没有生效 -->
-	<bean id="logInterceptor" class="org.study.util.LogInterceptor"></bean>
+	<!-- 
+		使用spring的代理工厂对 目标类（greetingImpl）进行增强代理，该代理要么是实现了aop的增强处理接口，比如methodInterceptor
+		或者是cjlib的增强比如 环绕增强methodInterceptor
+		配置需要增强的目标类 target ，并且是对该类所有的方法进行增强，也包括继承的父类地方法
+		缺点：当需要对一系列的类做相同的处理时需要配置很多个ProxyFactoryBean，
+		并且不能对不需要的方法进行过滤处理，而且会使配置文件臃肿
+	 -->
+	<bean id="factory" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="org.study.aop.itf.Apology"></property> <!-- 引入接口 -->
+		<property name="target" ref="greetingImpl"></property>                    <!-- 目标类 -->
+		<property name="interceptorNames">
+			<array>
+				<value>greetingIntroAdvice</value>
+				<value>logInterceptor</value>
+			</array>
+		</property> <!-- 引入增强 -->
+		
+		<!-- 代理目标类，默认为false，即使用JDK代理接口，设置为true则使用cglib代理 -->
+		<property name="proxyTargetClass" value="true"></property>
+	</bean>
 	
-	<aop:config proxy-target-class="true">
-		<aop:pointcut expression="execution(* org.study.test.*.*())" id="methodPoint"/>
-		<aop:advisor advice-ref="logInterceptor" pointcut-ref="methodPoint"/>
-	</aop:config>
+	<!-- 使用spring+aspect注解只需要配置这一个配置，是aspect自动代理为true，默认是false -->
+	<aop:aspectj-autoproxy proxy-target-class="true" ></aop:aspectj-autoproxy>
+	
 	
 </beans>

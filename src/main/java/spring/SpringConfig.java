@@ -19,10 +19,9 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 public class SpringConfig {
 
-	
 	/**
 	 * 初始化一个redisTemplate
-	 */
+	 *//*
 	@Bean(name="redisTemplate")
 	public <K,V> RedisTemplate<K, V> getRedisTemplate() {
 		RedisTemplate redisTemplate = new RedisTemplate();
@@ -40,13 +39,13 @@ public class SpringConfig {
 		return new JedisPool(initJedisPoolConfig(),"127.0.0.1",6379);
 	}
 	
-	/**
+	*//**
 	 * 这个类是默认在localhost的6379端口写redis操作
-	 */
+	 *//*
 	@Bean
 	public JedisConnectionFactory initJedisConnectionFactory() {
 		return new JedisConnectionFactory();
 	}
-	
+	*/
 	
 }
