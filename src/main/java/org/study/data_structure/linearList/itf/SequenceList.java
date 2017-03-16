@@ -1,7 +1,6 @@
 package org.study.data_structure.linearList.itf;
 
 import org.springframework.util.Assert;
-import org.study.model.User;
 
 /**
  * 线性表操作实类
@@ -125,24 +124,6 @@ public class SequenceList implements LinearList {
 			list.add(objs[i]);
 		}
 		return list;
-	}
-	
-	
-	public static void main(String[] args) {
-		User user1 = new User("1","zhangsan1","sewwe",null);
-		User user2 = new User("2","zhangsan2","sewwe",null);
-		User user3 = new User("3","zhangsan3","sewwe",null);
-		User user4 = new User("4","zhangsan4","sewwe",null);
-		User user5 = new User("5","zhangsan5","sewwe",null);
-		User user6 = new User("7","zhangsan6","sewwe",null);
-		User user7 = new User("7","zhangsan7","sewwe",null);
-		User user8 = new User("8","zhangsan8","sewwe",null);
-		
-		SequenceList as = SequenceList.as(user1,user2,user3,user4,user5,user6,user7,user8);
-		
-		Object object = as.get(7);
-		System.out.println("this size is "+as.size);
-		System.out.println(object);
 	}
 	
 }

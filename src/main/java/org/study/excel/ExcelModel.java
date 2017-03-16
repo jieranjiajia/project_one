@@ -11,7 +11,7 @@ public class ExcelModel {
 	
 	@Excel(name="学号")
 	private Integer id;
-	@Excel(name="姓名")
+	@Excel(name="姓名", width=30)
 	private String userName;
 	@Excel(name="性别",replace={"男_0","女_1"},suffix="生")
 	private String sex;
