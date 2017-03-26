@@ -1,6 +1,7 @@
-package org.study.data_structure.linearList.itf;
+package org.study.data_structure.linearList.itf.impl;
 
 import org.springframework.util.Assert;
+import org.study.data_structure.linearList.itf.LinearList;
 
 /**
  * 线性表操作实类
