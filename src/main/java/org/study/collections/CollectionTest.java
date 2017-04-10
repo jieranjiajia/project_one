@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 /**
  * Created by Administrator on 2017/4/4 0004.
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class CollectionTest {
 
     @Test
