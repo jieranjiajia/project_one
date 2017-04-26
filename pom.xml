@@ -97,6 +97,28 @@
 			<version>2.3.1</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/cn.jpush.api/jsms-client -->
+		<dependency>
+		    <groupId>cn.jpush.api</groupId>
+		    <artifactId>jsms-client</artifactId>
+		    <version>1.2.0</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/cn.com.riversoft/weixin-common -->
+		<dependency>
+		    <groupId>cn.com.riversoft</groupId>
+		    <artifactId>weixin-common</artifactId>
+		    <version>0.9.4</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/com.belerweb/pinyin4j -->
+		<dependency>
+		    <groupId>com.belerweb</groupId>
+		    <artifactId>pinyin4j</artifactId>
+		    <version>2.5.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
